@@ -1,18 +1,17 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM node:18.0.0-alphine
 
 # Set the working directory
-WORKDIR /app
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
 # Copy package.json and install dependencies
-COPY package.json ./
-RUN npm install
-
-# Copy the rest of the app's source code
 COPY . .
+RUN npm install
+RUN npm run build
 
 # Expose a port for the application
 EXPOSE 3000
 
 # Command to start the application
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
