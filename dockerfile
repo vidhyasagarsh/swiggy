@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Copy package.json and install dependencies
-COPY . .
+COPY package.json package-lock.json 
 RUN npm install
 RUN npm run build
 
