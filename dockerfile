@@ -1,15 +1,15 @@
-# Use a proper base image
-FROM ubuntu:latest
+FROM node:18.0.0-alpine
 
-# Update package list and install Apache2
-RUN apt-get update && apt-get install -y apache2
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# Copy the HTML file to the Apache web root
-COPY index.html /var/www/html/index.html
+COPY . .
+ENV NODE.OPTIONS=--openssl-legacy-provider
 
-# Expose port 80 for HTTP traffic
-EXPOSE 80
+RUN npm install
 
-# Start Apache in the foreground
-CMD ["apachectl", "-D", "FOREGROUND"]
+RUN npm run build
 
+EXPOSE 3000
+
+CMD ["npm","start"]
