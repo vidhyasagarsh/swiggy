@@ -1,14 +1,14 @@
-# use linux as the base image
+# Use Alpine Linux with Node.js as the base image
 FROM node:18.0.0-alpine
 
-# update package list and install Apache2
-RUN yum update && yum install -y Apache2
+# Update package list and install Apache2 using apk (Alpine uses apk, not yum)
+RUN apk update && apk add --no-cache apache2
 
-# copy the HTML file to the apache web root
-COPY index.html /var/www/html/index.html
+# Copy the HTML file to the Apache web root
+COPY index.html /var/www/localhost/htdocs/index.html
 
-#expose port 80 for HTTP traffic
+# Expose port 80 for HTTP traffic
 EXPOSE 80
 
-# start apache in the foreground
-CMD ["apchectl","-D", "FOREGROUND"]
+# Start Apache in the foreground
+CMD ["httpd", "-D", "FOREGROUND"]
