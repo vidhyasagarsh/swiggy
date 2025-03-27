@@ -1,19 +1,14 @@
+# use linux as the base image
 FROM node:18.0.0-alpine
 
-WORKDIR /usr/src/app
+# update package list and install Apache2
+RUN yum update && yum install -y Apache2
 
-# Copy package files first to leverage Docker cache
-COPY package*.json ./
+# copy the HTML file to the apache web root
+COPY index.html /var/www/html/index.html
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+#expose port 80 for HTTP traffic
+EXPOSE 80
 
-# Copy remaining project files
-COPY . .
-
-# Build the application
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+# start apache in the foreground
+CMD ["apchectl","-D", "FOREGROUND"]
