@@ -1,14 +1,15 @@
-# use linux as the base image
-FROM linux:latest
+# Use a proper base image
+FROM ubuntu:latest
 
-# update package list and install Apache2
-RUN yum update && yum install -y Apache2
+# Update package list and install Apache2
+RUN apt-get update && apt-get install -y apache2
 
-# copy the HTML file to the apache web root
+# Copy the HTML file to the Apache web root
 COPY index.html /var/www/html/index.html
 
-#expose port 80 for HTTP traffic
+# Expose port 80 for HTTP traffic
 EXPOSE 80
 
-# start apache in the foreground
-CMD ["apchectl","-D", "FOREGROUND"]
+# Start Apache in the foreground
+CMD ["apachectl", "-D", "FOREGROUND"]
+
