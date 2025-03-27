@@ -1,17 +1,14 @@
-# Use an official Node.js runtime as a parent image
-FROM node:18.0.0-alpine
+# use linux as the base image
+FROM linux:latest
 
-# Set the working directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# update package list and install Apache2
+RUN yum update && yum install -y Apache2
 
-# Copy package.json and install dependencies
-COPY package.json package-lock.json 
-RUN npm install
-RUN npm run build
+# copy the HTML file to the apache web root
+COPY index.html /var/www/html/index.html
 
-# Expose a port for the application
-EXPOSE 3000
+#expose port 80 for HTTP traffic
+EXPOSE 80
 
-# Command to start the application
-CMD ["npm", "start"]
+# start apache in the foreground
+CMD ["apchectl","-D", "FOREGROUND"]
